@@ -39,8 +39,6 @@
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      position:sticky;top:12px;backdrop-filter: blur(10px);
-      z-index:10;
     }
     .brand{display:flex;align-items:center;gap:12px}
     .logo{
@@ -61,9 +59,6 @@
       background:rgba(17,24,39,.55);
     }
 
-    .grid{display:grid;grid-template-columns: 1.1fr .9fr; gap:16px; margin-top:16px}
-    @media (max-width: 980px){.grid{grid-template-columns:1fr}}
-
     .card{
       border:1px solid rgba(255,255,255,.10);
       background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
@@ -78,13 +73,12 @@
       background:rgba(15,23,42,.55);
     }
     .card .bd{padding:14px 16px}
-    .title{font-weight:700;font-size:14.5px}
+    .title{font-weight:800;font-size:14.5px}
     .tiny{font-size:12px;color:var(--muted)}
 
     .row{display:flex;gap:10px;flex-wrap:wrap}
-    select, button, input[type="range"]{
-      font:inherit;
-    }
+
+    select, button, input[type="range"]{font:inherit}
     select{
       width:100%;
       padding:12px 12px;
@@ -94,6 +88,7 @@
       color:var(--text);
       outline:none;
     }
+
     .controls{display:grid;grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px}
     @media (max-width: 520px){.controls{grid-template-columns:1fr}}
 
@@ -127,21 +122,51 @@
       background:linear-gradient(180deg, rgba(251,191,36,.95), rgba(251,191,36,.72));
       border:none;color:#111827;
       padding:12px 14px;border-radius:14px;
-      cursor:pointer;font-weight:800;
+      cursor:pointer;font-weight:900;
       box-shadow: 0 14px 35px rgba(251,191,36,.18);
+      transition: transform .08s ease;
     }
+    button.primary:hover{transform: translateY(-1px)}
     button.ghost{
       background:rgba(17,24,39,.35);
       border:1px solid rgba(255,255,255,.12);
       color:var(--text);
       padding:12px 14px;border-radius:14px;
-      cursor:pointer;font-weight:650;
+      cursor:pointer;font-weight:700;
+      transition: transform .08s ease;
     }
-    button:disabled{opacity:.55;cursor:not-allowed}
+    button.ghost:hover{transform: translateY(-1px)}
+    button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 
-    .stepper{
-      display:grid;gap:10px;
+    .badge{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(15,23,42,.55);
+      color:rgba(255,255,255,.92);
+      white-space:nowrap;
     }
+    .badge.good{border-color: rgba(52,211,153,.6);background: rgba(52,211,153,.10)}
+    .badge.bad{border-color: rgba(251,113,133,.6);background: rgba(251,113,133,.10)}
+
+    .desc{color:rgba(229,231,235,.95);line-height:1.45;font-size:14px}
+    .muted{color:var(--muted)}
+
+    .progress{
+      height:10px;border-radius:999px;
+      background:rgba(255,255,255,.08);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transition: width .15s linear;
+    }
+
+    .stepper{display:grid;gap:10px}
     .step{
       border:1px solid rgba(255,255,255,.10);
       background:rgba(17,24,39,.40);
@@ -162,29 +187,33 @@
     }
 
     .stephd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .badge{
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(15,23,42,.55);
-      color:rgba(255,255,255,.92);
-      white-space:nowrap;
-    }
-    .badge.good{border-color: rgba(52,211,153,.6);background: rgba(52,211,153,.10)}
-    .badge.bad{border-color: rgba(251,113,133,.6);background: rgba(251,113,133,.10)}
 
-    .desc{color:rgba(229,231,235,.95);line-height:1.4;font-size:14px}
-    .muted{color:var(--muted)}
+    /* Journey UI */
+    .journeyNav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+    .journeyNav button.ghost{padding:10px 12px}
+    .journeyPips{display:flex;gap:8px;align-items:center;justify-content:center;flex:1}
+    .pip{width:10px;height:10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+    .pip.active{background:rgba(251,191,36,.85);border-color:rgba(251,191,36,.85);box-shadow:0 10px 25px rgba(251,191,36,.18)}
 
-    .timer{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding:12px 12px;
-      border-radius:16px;
+    .screens{margin-top:14px}
+    .screen{display:none}
+    .screen.active{display:block}
+
+    /* Floating dock */
+    .dock{position:fixed;left:0;right:0;bottom:0;padding:12px;z-index:20;pointer-events:none}
+    .dockInner{max-width:1100px;margin:0 auto;pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(15,23,42,.55);
+      background:rgba(15,23,42,.86);
+      backdrop-filter: blur(12px);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      padding:10px 12px;
     }
-    .bigtime{font-variant-numeric: tabular-nums; font-size:26px; font-weight:900; letter-spacing:.5px}
+    .bigtime{font-variant-numeric: tabular-nums; font-size:28px; font-weight:950; letter-spacing:.5px}
+    .dockTitle{display:flex;align-items:center;gap:8px}
+    .spark{display:inline-block;animation: pop .9s ease-in-out infinite alternate;}
+    @keyframes pop{to{transform: translateY(-1px) rotate(-2deg)}}
+
     .tbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
     .tbtns button{
       border-radius:12px;
@@ -193,25 +222,41 @@
       background:rgba(17,24,39,.45);
       color:var(--text);
       cursor:pointer;
-      font-weight:700;
+      font-weight:800;
     }
 
-    .progress{
-      height:10px;border-radius:999px;
-      background:rgba(255,255,255,.08);
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
+    @media (max-width: 720px){
+      .dockInner{flex-direction:column;align-items:stretch}
+      .tbtns{justify-content:space-between}
+      .bigtime{font-size:26px}
     }
-    .bar{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, var(--accent2), var(--accent));
-      transition: width .15s linear;
+
+    /* Make room for dock so it doesn’t cover content */
+    #screen-cook .bd{padding-bottom:140px}
+
+    .hint{
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(17,24,39,.35);
+      display:grid;gap:8px
+    }
+    .hint ul{margin:0;padding-left:18px;color:rgba(229,231,235,.92)}
+    .hint li{margin:6px 0}
+
+    .footerNote{margin-top:12px;color:var(--muted);font-size:12px;line-height:1.35}
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(15,23,42,.55);
+      color:rgba(255,255,255,.92)
     }
 
     .toast{
       position:fixed;
-      bottom:16px;left:50%;transform:translateX(-50%);
+      bottom:84px;left:50%;transform:translateX(-50%);
       background:rgba(17,24,39,.82);
       border:1px solid rgba(255,255,255,.12);
       color:var(--text);
@@ -237,29 +282,7 @@
       animation: fall linear forwards;
       filter: drop-shadow(0 8px 14px rgba(0,0,0,.2));
     }
-    @keyframes fall{
-      to{transform: translateY(calc(100vh + 30px)) rotate(720deg); opacity:1}
-    }
-
-    .hint{
-      padding:12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(17,24,39,.35);
-      display:grid;gap:8px
-    }
-    .hint ul{margin:0;padding-left:18px;color:rgba(229,231,235,.92)}
-    .hint li{margin:6px 0}
-
-    .footerNote{margin-top:12px;color:var(--muted);font-size:12px;line-height:1.35}
-    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12px;
-      padding:2px 6px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(15,23,42,.55);
-      color:rgba(255,255,255,.92)
-    }
+    @keyframes fall{ to{transform: translateY(calc(100vh + 30px)) rotate(720deg); opacity:1} }
   </style>
 </head>
 <body>
@@ -269,119 +292,176 @@
         <div class="logo" aria-hidden="true"><span>🍜</span></div>
         <div>
           <h1>Pot Noodle App</h1>
-          <p class="sub">Pick your flavour • pick your vibe • follow the timers • eat like a legend</p>
+          <p class="sub">A silly little noodle quest with timers (and vibes)</p>
         </div>
       </div>
       <div class="pillrow" aria-label="quick tips">
-        <div class="pill">⏱️ Step-by-step timers</div>
-        <div class="pill">🥣 Sloppy/Dry preference</div>
-        <div class="pill">✨ Extra flavour hacks</div>
+        <div class="pill">🧭 Journey mode</div>
+        <div class="pill">⏱️ Floating timer dock</div>
+        <div class="pill">✨ Flavour hacks</div>
       </div>
     </header>
 
-    <div class="grid">
-      <section class="card" aria-label="setup">
-        <div class="hd">
-          <div>
-            <div class="title">1) Choose your Pot</div>
-            <div class="tiny">We’ll build the right steps + timers for it.</div>
-          </div>
-          <div class="badge" id="packBadge">—</div>
-        </div>
-        <div class="bd">
-          <label class="tiny" for="flavour">Flavour / product</label>
-          <select id="flavour"></select>
+    <nav class="journeyNav" aria-label="Journey navigation">
+      <button class="ghost" id="navBack" disabled>← Back</button>
+      <div class="journeyPips" aria-hidden="true">
+        <span class="pip active" data-pip="start"></span>
+        <span class="pip" data-pip="setup"></span>
+        <span class="pip" data-pip="hacks"></span>
+        <span class="pip" data-pip="cook"></span>
+      </div>
+      <button class="ghost" id="navHome">↺ Back to start</button>
+    </nav>
 
-          <div class="controls" style="margin-top:12px">
+    <main class="screens">
+      <!-- Screen: Start -->
+      <section class="screen active" id="screen-start" data-screen="start" aria-label="Start">
+        <div class="card">
+          <div class="hd">
             <div>
-              <div class="tiny">Cooking method</div>
-              <div class="seg" id="methodSeg" role="tablist" aria-label="Cooking method"></div>
+              <div class="title">Welcome, Noodle Adventurer</div>
+              <div class="tiny">Your mission: turn dry bricks into saucy glory.</div>
             </div>
+            <div class="badge">🎒 Quest</div>
+          </div>
+          <div class="bd">
+            <div class="desc" style="font-size:15px">
+              You’ll go through 3 rooms:
+              <ol style="margin:10px 0 0 0; padding-left:18px">
+                <li><strong>Choose</strong> your flavour + vibe</li>
+                <li><strong>Power-ups</strong> (optional flavour hacks)</li>
+                <li><strong>Boss fight</strong>: cooking steps with a floating timer dock</li>
+              </ol>
+            </div>
+            <div class="btnrow" style="margin-top:14px">
+              <button class="primary" id="begin">Begin the quest ▶</button>
+              <button class="ghost" id="surpriseStart">🎲 Surprise me</button>
+            </div>
+            <div class="footerNote">Safety: boiling water is hot. Follow your pack if it differs.</div>
+          </div>
+        </div>
+      </section>
 
+      <!-- Screen: Setup -->
+      <section class="screen" id="screen-setup" data-screen="setup" aria-label="Setup">
+        <section class="card" aria-label="setup">
+          <div class="hd">
             <div>
-              <div class="tiny">Texture preference</div>
-              <div class="seg" id="textureSeg" role="tablist" aria-label="Texture preference">
-                <button type="button" data-texture="sloppy" class="active">🥣 Sloppy</button>
-                <button type="button" data-texture="classic">👌 Classic</button>
-                <button type="button" data-texture="dry">🍴 Dry</button>
+              <div class="title">Room 1: Choose your loadout</div>
+              <div class="tiny">Pick your pot, method, and texture preference.</div>
+            </div>
+            <div class="badge" id="packBadge">—</div>
+          </div>
+          <div class="bd">
+            <label class="tiny" for="flavour">Flavour / product</label>
+            <select id="flavour"></select>
+
+            <div class="controls" style="margin-top:12px">
+              <div>
+                <div class="tiny">Cooking method</div>
+                <div class="seg" id="methodSeg" role="tablist" aria-label="Cooking method"></div>
               </div>
-              <div class="tiny" style="margin-top:10px">Sauciness knob (just for fun)</div>
-              <input id="sauceKnob" type="range" min="0" max="100" value="50" style="width:100%" />
+
+              <div>
+                <div class="tiny">Texture preference</div>
+                <div class="seg" id="textureSeg" role="tablist" aria-label="Texture preference">
+                  <button type="button" data-texture="sloppy" class="active">🥣 Sloppy</button>
+                  <button type="button" data-texture="classic">👌 Classic</button>
+                  <button type="button" data-texture="dry">🍴 Dry</button>
+                </div>
+                <div class="tiny" style="margin-top:10px">Sauciness knob (just for fun)</div>
+                <input id="sauceKnob" type="range" min="0" max="100" value="50" style="width:100%" />
+              </div>
+            </div>
+
+            <div class="btnrow">
+              <button class="primary" id="build">Lock it in ▶</button>
+              <button class="ghost" id="surprise">🎲 Surprise me</button>
+              <button class="ghost" id="resetAll">Reset</button>
+            </div>
+
+            <div class="footerNote">
+              <strong>Heads up:</strong> Always follow the instructions on <em>your</em> pack if they differ.
+              Hot water + noodles = lava. 🥵
             </div>
           </div>
-
-          <div class="btnrow">
-            <button class="primary" id="build">Build my steps</button>
-            <button class="ghost" id="surprise">🎲 Surprise me</button>
-            <button class="ghost" id="resetAll">Reset</button>
-          </div>
-
-          <div class="footerNote">
-            <strong>Heads up:</strong> Always follow the instructions on <em>your</em> pack if they differ. This app is a helper.
-            Hot water + noodles = lava. 🥵
-          </div>
-        </div>
+        </section>
       </section>
 
-      <aside class="card" aria-label="hints">
-        <div class="hd">
-          <div>
-            <div class="title">2) Extra flavour hacks</div>
-            <div class="tiny">If you’re feeling chaotic-good.</div>
-          </div>
-          <div class="badge" id="hintBadge">✨</div>
-        </div>
-        <div class="bd">
-          <div class="hint">
-            <div class="title" style="font-size:14px">For your selected flavour:</div>
-            <div class="desc" id="flavourDesc">Pick a flavour to see what’s in the pot and the best add-ons.</div>
-            <div class="progress" aria-hidden="true"><div class="bar" id="knobBar"></div></div>
-            <div class="tiny">Your sauciness level: <span id="knobLabel">50</span>/100</div>
-            <ul id="hintList"></ul>
-            <div class="tiny muted" id="sachetNote"></div>
-          </div>
-
-          <div class="footerNote" style="margin-top:12px">
-            Pro-tip: Keep a fork nearby. You’re about to become a <span class="kbd">stir-based athlete</span>.
-          </div>
-        </div>
-      </aside>
-
-      <section class="card" aria-label="steps" style="grid-column: 1 / -1;">
-        <div class="hd">
-          <div>
-            <div class="title">3) Cook mode</div>
-            <div class="tiny">Hit Start on each step. Auto-advances when a timer finishes.</div>
-          </div>
-          <div class="row">
-            <div class="badge" id="statusBadge">Waiting…</div>
-            <div class="badge" id="totalTimeBadge">Total: —</div>
-          </div>
-        </div>
-        <div class="bd">
-          <div class="timer" aria-label="active timer">
+      <!-- Screen: Hacks -->
+      <section class="screen" id="screen-hacks" data-screen="hacks" aria-label="Hacks">
+        <aside class="card" aria-label="hints">
+          <div class="hd">
             <div>
-              <div class="tiny" id="activeStepName">No steps yet</div>
-              <div class="bigtime" id="time">00:00</div>
-              <div class="tiny muted" id="activeTip">Build steps to begin.</div>
+              <div class="title">Room 2: Optional power-ups</div>
+              <div class="tiny">Pick one. Or don’t. Your destiny is yours.</div>
             </div>
-            <div class="tbtns">
-              <button id="startPause" disabled>▶ Start</button>
-              <button id="skip" disabled>⏭ Skip</button>
-              <button id="restart" disabled>↺ Restart step</button>
-              <button id="mute">🔊 Sound on</button>
+            <div class="badge">✨</div>
+          </div>
+          <div class="bd">
+            <div class="hint">
+              <div class="title" style="font-size:14px">For your selected flavour:</div>
+              <div class="desc" id="flavourDesc">Pick a flavour to see what’s in the pot and the best add-ons.</div>
+              <div class="progress" aria-hidden="true"><div class="bar" id="knobBar"></div></div>
+              <div class="tiny">Your sauciness level: <span id="knobLabel">50</span>/100</div>
+              <ul id="hintList"></ul>
+              <div class="tiny muted" id="sachetNote"></div>
+            </div>
+
+            <div class="btnrow" style="margin-top:14px">
+              <button class="primary" id="toCook">Enter cook mode ▶</button>
+              <button class="ghost" id="reroll">🔁 Reroll hacks</button>
+            </div>
+
+            <div class="footerNote" style="margin-top:12px">
+              Pro-tip: Keep a fork nearby. You’re about to become a <span class="kbd">stir-based athlete</span>.
             </div>
           </div>
-
-          <div style="margin-top:12px" class="progress" aria-label="timer progress"><div class="bar" id="progressBar"></div></div>
-
-          <div style="margin-top:14px" class="stepper" id="stepper"></div>
-
-          <div class="footerNote" style="margin-top:14px">
-            Keyboard: <span class="kbd">Space</span> start/pause • <span class="kbd">→</span> skip • <span class="kbd">R</span> restart step • <span class="kbd">M</span> mute
-          </div>
-        </div>
+        </aside>
       </section>
+
+      <!-- Screen: Cook -->
+      <section class="screen" id="screen-cook" data-screen="cook" aria-label="Cook">
+        <section class="card" aria-label="steps">
+          <div class="hd">
+            <div>
+              <div class="title">Room 3: Boss fight (cooking)</div>
+              <div class="tiny">Use the floating dock at the bottom. One button: Next.</div>
+            </div>
+            <div class="row">
+              <div class="badge" id="statusBadge">Waiting…</div>
+              <div class="badge" id="totalTimeBadge">Total: —</div>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="stepper" id="stepper"></div>
+
+            <div class="footerNote" style="margin-top:14px">
+              Keyboard: <span class="kbd">Space</span> next/start • <span class="kbd">R</span> restart timer step • <span class="kbd">M</span> mute
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <!-- Floating timer dock (only shown on cook screen) -->
+  <div class="dock" id="dock" aria-label="Floating timer controls" style="display:none">
+    <div class="dockInner">
+      <div>
+        <div class="dockTitle">
+          <div class="tiny" id="activeStepName">No steps yet</div>
+          <span class="spark" aria-hidden="true">✨</span>
+        </div>
+        <div class="bigtime" id="time">00:00</div>
+        <div class="tiny muted" id="activeTip">Build steps to begin.</div>
+        <div class="progress" style="margin-top:8px" aria-label="timer progress"><div class="bar" id="progressBar"></div></div>
+      </div>
+      <div class="tbtns">
+        <button id="next" disabled>Next ▶</button>
+        <button id="restart" disabled>↺ Restart</button>
+        <button id="mute">🔊 Sound on</button>
+      </div>
     </div>
   </div>
 
@@ -390,128 +470,47 @@
 
   <script>
     // Pot Noodle App — single-file, GitHub Pages friendly.
-    // Data sources used to build these steps:
-    // - Standard Pot Noodle pot prep pattern (boiling water to fill line, 2 min wait, stir, add sachet, 2 min wait):
-    //   Unilever Food Solutions product pages (example: Chicken & Mushroom) show these preparation steps.
-    // - "Lost the Pot Noodle" (packet) hob + microwave instructions:
-    //   Tesco product page for Lost the Pot Smokin' BBQ lists hob + microwave methods.
-    // - Flavour add-on tips:
-    //   PotNoodle FAQ page lists extra tips for several flavours.
+    // Data sources used to build these steps (summary):
+    // - Standard pot prep pattern (fill line + 2 min + stir + sachet + 2 min): Unilever Food Solutions product prep steps.
+    // - Lost the Pot (packet) hob/microwave: Tesco product pages list hob + microwave instructions.
+    // - Some add-on tips: Pot Noodle FAQ.
 
     const $ = (sel, root=document) => root.querySelector(sel);
     const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
     const PRODUCTS = [
-      // POT (in the pot)
-      {
-        id: 'pot_chicken_mushroom',
-        name: 'Pot Noodle — Chicken & Mushroom',
-        type: 'pot',
-        hasSachet: true,
-        sachetLabel: 'Soy sauce sachet',
-        description: 'Noodles in a chicken & mushroom flavour sauce with veggies, plus a little soy sauce sachet.',
-        hints: ['Add some cheese for a melty, indulgent upgrade. 🧀'],
-        defaultMethod: 'kettle'
-      },
-      {
-        id: 'pot_beef_tomato',
-        name: 'Pot Noodle — Beef & Tomato',
-        type: 'pot',
-        hasSachet: true,
-        sachetLabel: 'Sauce sachet (varies by pack)',
-        description: 'Beef & tomato vibes with dried veg. Sachet varies by pack — check your lid! ',
-        hints: ['Try adding croutons for extra bite. 🥖'],
-        defaultMethod: 'kettle'
-      },
-      {
-        id: 'pot_bombay_bad_boy',
-        name: 'Pot Noodle — Bombay Bad Boy',
-        type: 'pot',
-        hasSachet: true,
-        sachetLabel: 'Hot sauce sachet (common)',
-        description: 'Spicy curry-style noodles. If you’ve got a sachet under the lid, you’re in business.',
-        hints: ['Add extra hot chilli sauce if you can handle it. 🌶️'],
-        defaultMethod: 'kettle'
-      },
-      {
-        id: 'pot_original_curry',
-        name: 'Pot Noodle — Original Curry',
-        type: 'pot',
-        hasSachet: true,
-        sachetLabel: 'Sweet mango sauce sachet',
-        description: 'Classic curry pot with a sweet mango sachet on many packs.',
-        hints: ['Throw in some diced tomatoes to switch it up. 🍅'],
-        defaultMethod: 'kettle'
-      },
-      {
-        id: 'pot_sweet_sour',
-        name: 'Pot Noodle — Sweet & Sour',
-        type: 'pot',
-        hasSachet: true,
-        sachetLabel: 'Sweet & sour sauce sachet',
-        description: 'Sweet & sour flavour sauce with veggies and a little extra sauce sachet.',
-        hints: ['Add a splash of rice vinegar + spring onions if you’re feeling fancy. 🧅'],
-        defaultMethod: 'kettle'
-      },
-      {
-        id: 'pot_sticky_rib',
-        name: "Pot Noodle — Sticky Rib",
-        type: 'pot',
-        hasSachet: true,
-        sachetLabel: 'Sauce sachet (varies by pack)',
-        description: 'Sticky, savoury, glorious. Check your lid for a sachet before you begin.',
-        hints: ['Add a pinch of smoked paprika or BBQ sauce to lean into the vibe. 🔥'],
-        defaultMethod: 'kettle'
-      },
+      { id:'pot_chicken_mushroom', name:'Pot Noodle — Chicken & Mushroom', type:'pot', hasSachet:true, sachetLabel:'Soy sauce sachet',
+        description:'Chicken & mushroom vibes with veg + a little soy sachet on many packs.', hints:['Add some cheese for a melty, indulgent upgrade. 🧀'], defaultMethod:'kettle' },
+      { id:'pot_beef_tomato', name:'Pot Noodle — Beef & Tomato', type:'pot', hasSachet:true, sachetLabel:'Sauce sachet (varies by pack)',
+        description:'Beef & tomato sauce-y goodness. Sachet varies by pack — check your lid!', hints:['Try adding croutons for extra bite. 🥖'], defaultMethod:'kettle' },
+      { id:'pot_bombay_bad_boy', name:'Pot Noodle — Bombay Bad Boy', type:'pot', hasSachet:true, sachetLabel:'Hot sauce sachet (common)',
+        description:'Spicy curry-style noodles. If you’ve got a sachet under the lid, you’re in business.', hints:['Add extra hot chilli sauce if you can handle it. 🌶️'], defaultMethod:'kettle' },
+      { id:'pot_original_curry', name:'Pot Noodle — Original Curry', type:'pot', hasSachet:true, sachetLabel:'Sweet mango sauce sachet (common)',
+        description:'Classic curry pot with a sweet mango sachet on many packs.', hints:['Throw in some diced tomatoes to switch it up. 🍅'], defaultMethod:'kettle' },
+      { id:'pot_sweet_sour', name:'Pot Noodle — Sweet & Sour', type:'pot', hasSachet:true, sachetLabel:'Sweet & sour sauce sachet',
+        description:'Sweet & sour flavour with veg + a little extra sauce sachet on many packs.', hints:['Add spring onions if you’re feeling fancy. 🧅'], defaultMethod:'kettle' },
+      { id:'pot_sticky_rib', name:"Pot Noodle — Sticky Rib", type:'pot', hasSachet:true, sachetLabel:'Sauce sachet (varies by pack)',
+        description:'Sticky, savoury, glorious. Check your lid for a sachet before you begin.', hints:['Add a pinch of smoked paprika or BBQ sauce to lean into it. 🔥'], defaultMethod:'kettle' },
 
-      // LOST THE POT (packet; needs bowl/pan)
-      {
-        id: 'lost_smokin_bqq',
-        name: "Lost the Pot — Smokin' BBQ (packet)",
-        type: 'lost',
-        hasSachet: true,
-        sachetLabel: 'Seasoning sachet',
-        description: 'No pot. Big freedom. Cook on hob or microwave (in a microwave-safe dish).',
-        hints: ['Add peas / carrots / stir-fry veg for instant grown-up points. 🥕'],
-        defaultMethod: 'microwave'
-      },
-      {
-        id: 'lost_champion_chicken',
-        name: "Lost the Pot — Champion Chicken (packet)",
-        type: 'lost',
-        hasSachet: true,
-        sachetLabel: 'Seasoning sachet',
-        description: 'No pot. All power. Cook on hob or microwave (in a microwave-safe dish).',
-        hints: ['Add shredded leftover roast chicken if you’ve got it. 🐔'],
-        defaultMethod: 'microwave'
-      },
+      { id:'lost_smokin_bqq', name:"Lost the Pot — Smokin' BBQ (packet)", type:'lost', hasSachet:true, sachetLabel:'Seasoning sachet',
+        description:'No pot. Big freedom. Cook on hob or microwave (in a microwave-safe dish).', hints:['Add peas / carrots / stir-fry veg for instant grown-up points. 🥕'], defaultMethod:'microwave' },
+      { id:'lost_champion_chicken', name:"Lost the Pot — Champion Chicken (packet)", type:'lost', hasSachet:true, sachetLabel:'Seasoning sachet',
+        description:'No pot. All power. Cook on hob or microwave (in a microwave-safe dish).', hints:['Add leftover roast chicken if you’ve got it. 🐔'], defaultMethod:'microwave' },
     ];
 
     const METHODS = {
-      kettle: {
-        id: 'kettle',
-        label: '♨️ Kettle (boiling water)',
-        allowedTypes: ['pot'],
-      },
-      microwave: {
-        id: 'microwave',
-        label: '📡 Microwave (dish)',
-        allowedTypes: ['lost'],
-      },
-      hob: {
-        id: 'hob',
-        label: '🍳 Hob (pan)',
-        allowedTypes: ['lost'],
-      },
+      kettle: { id:'kettle', label:'♨️ Kettle (boiling water)', allowedTypes:['pot'] },
+      microwave: { id:'microwave', label:'📡 Microwave (dish)', allowedTypes:['lost'] },
+      hob: { id:'hob', label:'🍳 Hob (pan)', allowedTypes:['lost'] },
     };
 
     const GENERAL_HACKS = [
       'Add a knob of butter for glossy sauce. 🧈',
       'A squeeze of lime/lemon wakes it up. 🍋',
-      'Pinch of MSG (if you’re into science). 🧪',
       'Crispy onions / chilli crisp = instant upgrade. 🧅🌶️',
-      'Crack an egg in at the end and stir hard (only if it’s piping hot). 🥚',
       'A few drops of sesame oil for “takeaway aroma”. 🌰',
+      'Extra black pepper = "adult mode". 🧑‍🍳',
+      'Add a slice of cheese and stir like a maniac. 🧀',
     ];
 
     const TIMEWELLSPENT = [
@@ -520,48 +519,85 @@
       'Compose a haiku about noodles. 📝',
       'Do a heroic lap around the kitchen. 🏃',
       'Text someone: “I’m busy. I’m cooking.” 💅',
-      'Pretend you’re a TV chef. "Now we wait…" 📺',
+      'Pretend you’re a TV chef: “and now… we wait.” 📺',
     ];
 
-    // --- UI wiring ---
+    // Screens
+    const screens = {
+      start: $('#screen-start'),
+      setup: $('#screen-setup'),
+      hacks: $('#screen-hacks'),
+      cook: $('#screen-cook'),
+    };
+    const navBack = $('#navBack');
+    const navHome = $('#navHome');
+
+    function setPip(active){
+      $$('.pip').forEach(p => p.classList.toggle('active', p.dataset.pip===active));
+    }
+
+    let historyStack = ['start'];
+    let currentScreen = 'start';
+
+    function showScreen(name, push=true){
+      for(const k of Object.keys(screens)) screens[k].classList.toggle('active', k===name);
+      currentScreen = name;
+      setPip(name);
+      if(push){
+        historyStack.push(name);
+      }
+      navBack.disabled = historyStack.length <= 1;
+      dock.style.display = (name === 'cook') ? 'block' : 'none';
+
+      const msg = {start:'Quest ready.', setup:'Choose your loadout.', hacks:'Power-ups acquired.', cook:'Boss fight: noodles.'}[name];
+      if(msg) toastMsg(msg);
+    }
+
+    // UI elements
+    const beginBtn = $('#begin');
+    const surpriseStartBtn = $('#surpriseStart');
+
     const flavourSel = $('#flavour');
     const methodSeg = $('#methodSeg');
     const textureSeg = $('#textureSeg');
     const sauceKnob = $('#sauceKnob');
 
     const packBadge = $('#packBadge');
-    const hintBadge = $('#hintBadge');
     const flavourDesc = $('#flavourDesc');
     const hintList = $('#hintList');
     const sachetNote = $('#sachetNote');
+    const knobBar = $('#knobBar');
+    const knobLabel = $('#knobLabel');
 
-    const stepper = $('#stepper');
     const buildBtn = $('#build');
     const surpriseBtn = $('#surprise');
     const resetAllBtn = $('#resetAll');
+    const toCookBtn = $('#toCook');
+    const rerollBtn = $('#reroll');
 
+    const stepper = $('#stepper');
     const statusBadge = $('#statusBadge');
     const totalTimeBadge = $('#totalTimeBadge');
+
+    // Dock
+    const dock = $('#dock');
     const activeStepName = $('#activeStepName');
     const timeEl = $('#time');
     const activeTip = $('#activeTip');
     const progressBar = $('#progressBar');
-    const knobBar = $('#knobBar');
-    const knobLabel = $('#knobLabel');
-
-    const startPauseBtn = $('#startPause');
-    const skipBtn = $('#skip');
+    const nextBtn = $('#next');
     const restartBtn = $('#restart');
     const muteBtn = $('#mute');
 
     const toast = $('#toast');
     const confetti = $('#confetti');
 
-    // --- state ---
+    // State
     let state = {
       productId: PRODUCTS[0].id,
       method: PRODUCTS[0].defaultMethod,
       texture: 'sloppy',
+      knob: 50,
       steps: [],
       stepIndex: 0,
       running: false,
@@ -569,7 +605,6 @@
       duration: 0,
       tickHandle: null,
       muted: false,
-      knob: 50,
     };
 
     function fmt(sec){
@@ -606,14 +641,13 @@
 
     function spawnConfetti(){
       confetti.innerHTML = '';
-      const n = 26;
+      const n = 28;
       for(let i=0;i<n;i++){
         const el = document.createElement('div');
         el.className = 'c';
         el.style.left = Math.random()*100 + 'vw';
         el.style.animationDuration = (2.4 + Math.random()*1.4) + 's';
         el.style.transform = `translateY(-10px) rotate(${Math.random()*120}deg)`;
-        // Let the browser pick default colors; we randomize via hsl to avoid hardcoding a palette.
         el.style.background = `hsl(${Math.floor(Math.random()*360)} 90% 65%)`;
         confetti.appendChild(el);
       }
@@ -631,7 +665,6 @@
     function buildMethodButtons(){
       const p = currentProduct();
       const allowed = allowedMethodsFor(p);
-      // If current method not allowed, snap to product default.
       if(!allowed.some(m => m.id === state.method)) state.method = p.defaultMethod;
 
       methodSeg.innerHTML = '';
@@ -657,15 +690,19 @@
 
       hintList.innerHTML = '';
       const list = [];
+
       // Flavour-specific
       for(const h of p.hints || []) list.push(h);
+
       // Texture guidance
       if(state.texture === 'dry') list.push('Dry mode: aim just under the fill line / slightly less liquid.');
-      if(state.texture === 'sloppy') list.push('Sloppy mode: go to the fill line (or a tiny splash above if your pack allows).');
-      if(state.texture === 'classic') list.push('Classic mode: straight to the fill line and trust the process.');
+      if(state.texture === 'sloppy') list.push('Sloppy mode: fill to the line (or a tiny splash more if you like it looser).');
+      if(state.texture === 'classic') list.push('Classic mode: fill to the line. No drama.');
+
       // Knob guidance
-      if(state.knob >= 80) list.push('Sauciness 80+? Consider adding a splash of soy / chilli crisp / ketchup (choose your chaos).');
-      if(state.knob <= 20) list.push('Sauciness 20-? Keep it tight: stir well and let it sit a touch longer.');
+      if(state.knob >= 80) list.push('Sauciness 80+? Consider extra soy / chilli crisp / ketchup (choose your chaos).');
+      if(state.knob <= 20) list.push('Sauciness 20-? Stir well and let it sit a touch longer (thicker vibes).');
+
       // General hacks (random 2)
       const g = GENERAL_HACKS.slice().sort(()=>Math.random()-0.5).slice(0,2);
       list.push(...g);
@@ -691,15 +728,10 @@
     }
 
     function stepsFor(product, method){
-      // We keep the official-ish structure, but add playful microcopy.
-      // NOTE: Times come from cited sources (see top of file) where possible.
-      // If you want to be extra accurate per flavour/size, you can extend this with per-pack overrides.
-
       const sauceMsg = (product.hasSachet)
-        ? `Remove the sachet and keep it safe. (Do NOT eat it now. This is not that kind of app.)`
+        ? `Remove the sachet and keep it safe. (This is not a snack. Yet.)`
         : `No sachet? Cool. Your future self thanks you.`;
 
-      // Texture tweaks (gentle): we do NOT claim exact ml changes; we phrase as guidance.
       const textureTip = (function(){
         if(state.texture==='dry') return 'Dry mode: aim slightly under the fill line (thicker sauce).';
         if(state.texture==='sloppy') return 'Sloppy mode: fill to the line (or a tiny splash more if you like it looser).';
@@ -707,131 +739,42 @@
       })();
 
       if(product.type === 'pot'){
-        // Kettle method based on UFS preparation:
-        // 1) Peel back lid halfway, remove sachet, pour boiling water to fill line, re-cover & leave 2 mins
-        // 2) Stir in sachet contents, leave for another 2 mins
-        // 3) Eat (do not reheat)
         return [
-          {
-            id:'open',
-            name:'Peel lid + locate sachet',
-            duration: 0,
-            kind:'action',
-            text: `Peel the lid back halfway. ${sauceMsg}`
-          },
-          {
-            id:'water',
-            name:'Add boiling water',
-            duration: 0,
-            kind:'action',
-            text: `Pour boiling water in to the fill line. ${textureTip} Re-cover with the lid.`
-          },
-          {
-            id:'wait1',
-            name:'Wait (steam magic)',
-            duration: 120,
-            kind:'timer',
-            text: `Leave it for 2 minutes. Time well spent: ${TIMEWELLSPENT[Math.floor(Math.random()*TIMEWELLSPENT.length)]}`
-          },
-          {
-            id:'stir1',
-            name:'Stir like you mean it',
-            duration: 0,
-            kind:'action',
-            text: `Stir thoroughly. Scrape the corners. Free the flavour.`
-          },
-          {
-            id:'sachet',
-            name:'Add sachet',
-            duration: 0,
-            kind:'action',
-            text: product.hasSachet
-              ? `Add the sachet contents now (${product.sachetLabel}). Stir again.`
-              : `If your pack has a sachet, add it now. If not, proceed. Stir again.`
-          },
-          {
-            id:'wait2',
-            name:'Wait (final form)',
-            duration: 120,
-            kind:'timer',
-            text: `Leave for another 2 minutes. Your noodles are evolving…` + (state.texture==='dry' ? ' (Dry mode bonus: leave it an extra 20–30 seconds if you want it thicker.)' : '')
-          },
-          {
-            id:'eat',
-            name:'Eat while it’s hot',
-            duration: 0,
-            kind:'action',
-            text: `Stir once more and tuck in. Warning: it will be hot. Victory tastes like noodles.`
-          },
+          { id:'open', name:'Peel lid + locate sachet', duration:0, kind:'action', text:`Peel the lid back halfway. ${sauceMsg}` },
+          { id:'water', name:'Add boiling water', duration:0, kind:'action', text:`Pour boiling water in to the fill line. ${textureTip} Re-cover with the lid.` },
+          { id:'wait1', name:'Wait (steam magic)', duration:120, kind:'timer', text:`Leave it for 2 minutes. Time well spent: ${TIMEWELLSPENT[Math.floor(Math.random()*TIMEWELLSPENT.length)]}` },
+          { id:'stir1', name:'Stir like you mean it', duration:0, kind:'action', text:`Stir thoroughly. Scrape the corners. Free the flavour.` },
+          { id:'sachet', name:'Add sachet', duration:0, kind:'action', text: product.hasSachet ? `Add the sachet contents now (${product.sachetLabel}). Stir again.` : `If your pack has a sachet, add it now. If not, proceed. Stir again.` },
+          { id:'wait2', name:'Wait (final form)', duration:120, kind:'timer', text:`Leave for another 2 minutes. Your noodles are evolving…` + (state.texture==='dry' ? ' (Dry mode bonus: leave it an extra 20–30 seconds if you want it thicker.)' : '') },
+          { id:'eat', name:'Eat while it’s hot', duration:0, kind:'action', text:`Stir once more and tuck in. Warning: it will be hot. Victory tastes like noodles.` },
         ];
       }
 
-      // LOST THE POT
       if(method === 'hob'){
-        // Tesco: Add noodles to pan of 300ml boiling water; stir in sachet; reduce heat and simmer 3 mins until absorbed.
         return [
-          {
-            id:'pan',
-            name:'Boil water in a pan',
-            duration: 0,
-            kind:'action',
-            text: `Bring 300 ml of water to the boil in a pan.`
-          },
-          {
-            id:'add',
-            name:'Add noodles + sachet',
-            duration: 0,
-            kind:'action',
-            text: `Add noodles. Stir in the sachet contents.`
-          },
-          {
-            id:'simmer',
-            name:'Simmer',
-            duration: 180,
-            kind:'timer',
-            text: `Reduce the heat slightly and simmer for 3 minutes, stirring occasionally, until liquid is absorbed.`
-          },
-          {
-            id:'serve',
-            name:'Stir & serve',
-            duration: 0,
-            kind:'action',
-            text: `Stir, taste, and serve. (Optional: add veggies for extra glory.)`
-          }
+          { id:'pan', name:'Boil water in a pan', duration:0, kind:'action', text:`Bring 300 ml of water to the boil in a pan.` },
+          { id:'add', name:'Add noodles + sachet', duration:0, kind:'action', text:`Add noodles. Stir in the sachet contents.` },
+          { id:'simmer', name:'Simmer', duration:180, kind:'timer', text:`Reduce the heat slightly and simmer for 3 minutes, stirring occasionally, until liquid is absorbed.` },
+          { id:'serve', name:'Stir & serve', duration:0, kind:'action', text:`Stir, taste, and serve. (Optional: add veggies for extra glory.)` },
         ];
       }
 
       // Microwave
       return [
-        {
-          id:'dish',
-          name:'Microwave-safe dish',
-          duration: 0,
-          kind:'action',
-          text: `Add noodles and sachet contents to a large microwave-safe dish.`
-        },
-        {
-          id:'water',
-          name:'Add boiling water',
-          duration: 0,
-          kind:'action',
-          text: `Pour over 300 ml of boiling water and cover the dish.`
-        },
-        {
-          id:'cook',
-          name:'Microwave on high',
-          duration: 300,
-          kind:'timer',
-          text: `Cook on high for 5 minutes, stirring occasionally, until liquid is absorbed.`
-        },
-        {
-          id:'serve',
-          name:'Stir & serve',
-          duration: 0,
-          kind:'action',
-          text: `Stir and serve. Congratulations. You have mastered “no pot”.`
-        }
+        { id:'dish', name:'Microwave-safe dish', duration:0, kind:'action', text:`Add noodles and sachet contents to a large microwave-safe dish.` },
+        { id:'water', name:'Add boiling water', duration:0, kind:'action', text:`Pour over 300 ml of boiling water and cover the dish.` },
+        { id:'cook', name:'Microwave on high', duration:300, kind:'timer', text:`Cook on high for 5 minutes, stirring occasionally, until liquid is absorbed.` },
+        { id:'serve', name:'Stir & serve', duration:0, kind:'action', text:`Stir and serve. Congratulations. You have mastered “no pot”.` },
       ];
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
     }
 
     function renderSteps(){
@@ -870,7 +813,7 @@
 
         const mini = document.createElement('div');
         mini.className = 'tiny muted';
-        mini.textContent = s.kind==='timer' ? 'Tip: You can pause the timer.' : 'Tip: Hit Skip to move on.';
+        mini.textContent = s.kind==='timer' ? 'Dock tip: Next = start timer. Next again = skip (if running).' : 'Dock tip: press Next when you’re done.';
 
         const go = document.createElement('button');
         go.className = 'ghost';
@@ -896,13 +839,25 @@
       totalTimeBadge.textContent = `Total: ${fmt(total)}`;
     }
 
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'",'&#039;');
+    function updateProgressBar(){
+      if(state.duration <= 0){
+        progressBar.style.width = '0%';
+        return;
+      }
+      const pct = 100 * (1 - (state.remaining / state.duration));
+      progressBar.style.width = Math.max(0, Math.min(100, pct)) + '%';
+    }
+
+    function nextButtonLabel(){
+      const s = state.steps[state.stepIndex];
+      if(!s) return 'Next ▶';
+      if(s.kind === 'timer'){
+        if(state.running) return 'Next ⏭';
+        // not running
+        if(state.remaining < s.duration) return 'Resume ▶';
+        return 'Start ▶';
+      }
+      return 'Next ▶';
     }
 
     function syncActiveStep(){
@@ -915,8 +870,7 @@
         timeEl.textContent = '00:00';
         activeTip.textContent = 'Build steps to begin.';
         progressBar.style.width = '0%';
-        startPauseBtn.disabled = true;
-        skipBtn.disabled = true;
+        nextBtn.disabled = true;
         restartBtn.disabled = true;
         renderSteps();
         return;
@@ -926,65 +880,34 @@
       activeStepName.textContent = s.name;
       activeTip.textContent = s.text;
 
-      // If timer step and we haven't set remaining for it, initialise.
       if(s.kind === 'timer'){
-        if(state.duration !== s.duration || state.remaining<=0 || !state.running){
+        if(state.duration !== s.duration || state.remaining<=0 || (!state.running && state.remaining===0)){
           state.duration = s.duration;
           if(!state.running) state.remaining = s.duration;
         }
         timeEl.textContent = fmt(state.remaining);
-        startPauseBtn.disabled = false;
         restartBtn.disabled = false;
       } else {
         state.duration = 0;
         state.remaining = 0;
         timeEl.textContent = '—';
-        startPauseBtn.disabled = true;
         restartBtn.disabled = true;
       }
 
-      skipBtn.disabled = false;
-      startPauseBtn.textContent = state.running ? '⏸ Pause' : '▶ Start';
+      nextBtn.disabled = false;
+      nextBtn.textContent = nextButtonLabel();
       updateProgressBar();
       renderSteps();
     }
 
-    function updateProgressBar(){
-      if(state.duration <= 0){
-        progressBar.style.width = '0%';
-        return;
+    function stopTimer(finished=false){
+      if(state.tickHandle){
+        clearInterval(state.tickHandle);
+        state.tickHandle = null;
       }
-      const pct = 100 * (1 - (state.remaining / state.duration));
-      progressBar.style.width = Math.max(0, Math.min(100, pct)) + '%';
-    }
-
-    function nextStep(){
-      stopTimer();
-      state.stepIndex++;
-      if(state.stepIndex >= state.steps.length){
-        statusBadge.textContent = 'DONE 🎉';
-        activeStepName.textContent = 'You did it.';
-        timeEl.textContent = '🍜';
-        activeTip.textContent = 'Stir once more and enjoy. No reheating (and please don’t drink the sauce sachet).';
-        progressBar.style.width = '100%';
-        startPauseBtn.disabled = true;
-        skipBtn.disabled = true;
-        restartBtn.disabled = true;
-        spawnConfetti();
-        beep('done');
-        toastMsg('Pot noodle: completed. Legend status: unlocked.');
-        renderSteps();
-        return;
-      }
-      // Initialise next step timer if needed.
-      const s = state.steps[state.stepIndex];
-      if(s.kind==='timer'){
-        state.duration = s.duration;
-        state.remaining = s.duration;
-      }
-      syncActiveStep();
-      if(s.kind==='timer') toastMsg('Timer step ready. Hit Start.');
-      else toastMsg('Action step: do the thing, then hit Skip.');
+      state.running = false;
+      nextBtn.textContent = nextButtonLabel();
+      if(!finished) updateProgressBar();
     }
 
     function startTimer(){
@@ -993,7 +916,7 @@
       if(state.running) return;
 
       state.running = true;
-      startPauseBtn.textContent = '⏸ Pause';
+      nextBtn.textContent = nextButtonLabel();
       statusBadge.textContent = `Step ${state.stepIndex+1}/${state.steps.length} • running`;
 
       let last = performance.now();
@@ -1009,7 +932,7 @@
           updateProgressBar();
           stopTimer(true);
           beep('done');
-          toastMsg('Timer done! Next step…');
+          toastMsg('Timer done! Auto-advancing…');
           nextStep();
           return;
         }
@@ -1017,16 +940,6 @@
         timeEl.textContent = fmt(state.remaining);
         updateProgressBar();
       }, 120);
-    }
-
-    function stopTimer(finished=false){
-      if(state.tickHandle){
-        clearInterval(state.tickHandle);
-        state.tickHandle = null;
-      }
-      state.running = false;
-      startPauseBtn.textContent = '▶ Start';
-      if(!finished) updateProgressBar();
     }
 
     function restartStep(){
@@ -1037,53 +950,82 @@
       state.remaining = s.duration;
       timeEl.textContent = fmt(state.remaining);
       updateProgressBar();
-      toastMsg('Step restarted. You’ve got this.');
+      toastMsg('Timer restarted. Round 2. Fight.');
+      nextBtn.textContent = nextButtonLabel();
+    }
+
+    function nextStep(){
+      stopTimer();
+      state.stepIndex++;
+      if(state.stepIndex >= state.steps.length){
+        statusBadge.textContent = 'DONE 🎉';
+        activeStepName.textContent = 'You did it.';
+        timeEl.textContent = '🍜';
+        activeTip.textContent = 'Final move: stir once more and enjoy.';
+        progressBar.style.width = '100%';
+        nextBtn.disabled = true;
+        restartBtn.disabled = true;
+        spawnConfetti();
+        beep('done');
+        toastMsg('Legend status: unlocked.');
+        renderSteps();
+        return;
+      }
+
+      const s = state.steps[state.stepIndex];
+      if(s.kind==='timer'){
+        state.duration = s.duration;
+        state.remaining = s.duration;
+      }
+      syncActiveStep();
+      toastMsg(s.kind==='timer' ? 'Timer step ready. Press Start in the dock.' : 'Action step: do the thing, then Next.');
     }
 
     function buildSteps(){
       const p = currentProduct();
-      const steps = stepsFor(p, state.method);
-      state.steps = steps;
+      state.steps = stepsFor(p, state.method);
       state.stepIndex = 0;
       state.running = false;
       state.remaining = 0;
       state.duration = 0;
       stopTimer();
-      // Prime active step
-      const s0 = steps[0];
+
+      // Prime
+      const s0 = state.steps[0];
       if(s0 && s0.kind==='timer'){
         state.duration = s0.duration;
         state.remaining = s0.duration;
       }
+
       syncActiveStep();
-      toastMsg('Steps built. Let’s cook.');
     }
 
     function randomProduct(){
       const p = PRODUCTS[Math.floor(Math.random()*PRODUCTS.length)];
       state.productId = p.id;
       state.method = p.defaultMethod;
-      // Random texture for extra chaos
       setTexture(['sloppy','classic','dry'][Math.floor(Math.random()*3)]);
       flavourSel.value = state.productId;
       buildMethodButtons();
       updateHints();
       buildSteps();
+      toastMsg('Random loadout equipped.');
     }
 
     function resetAll(){
       stopTimer();
       state = {
-        ...state,
         productId: PRODUCTS[0].id,
         method: PRODUCTS[0].defaultMethod,
         texture: 'sloppy',
+        knob: 50,
         steps: [],
         stepIndex: 0,
         running: false,
         remaining: 0,
         duration: 0,
-        knob: 50,
+        tickHandle: null,
+        muted: state.muted,
       };
       flavourSel.value = state.productId;
       sauceKnob.value = String(state.knob);
@@ -1094,9 +1036,9 @@
       toastMsg('Reset complete. Fresh pot energy.');
     }
 
-    // --- events ---
+    // Events
     function init(){
-      // Fill dropdown
+      // Dropdown
       for(const p of PRODUCTS){
         const opt = document.createElement('option');
         opt.value = p.id;
@@ -1109,6 +1051,23 @@
       updateHints();
       syncActiveStep();
 
+      // Nav
+      navHome.addEventListener('click', () => {
+        resetAll();
+        historyStack = ['start'];
+        showScreen('start', false);
+      });
+      navBack.addEventListener('click', () => {
+        if(historyStack.length <= 1) return;
+        historyStack.pop();
+        const prev = historyStack[historyStack.length-1] || 'start';
+        showScreen(prev, false);
+      });
+
+      beginBtn.addEventListener('click', () => showScreen('setup'));
+      surpriseStartBtn.addEventListener('click', () => { randomProduct(); showScreen('cook'); });
+
+      // Setup
       flavourSel.addEventListener('change', () => {
         stopTimer();
         state.productId = flavourSel.value;
@@ -1116,80 +1075,87 @@
         state.method = p.defaultMethod;
         buildMethodButtons();
         updateHints();
-        // keep steps until user clicks build (less surprising)
-        toastMsg('Selected. Click “Build my steps”.');
+        toastMsg('Selected. Lock it in to continue.');
       });
 
-      methodSeg.addEventListener('click', () => {
-        // (buttons handle themselves)
-        updateHints();
-      });
-
-      $$('#textureSeg button').forEach(b => {
-        b.addEventListener('click', () => setTexture(b.dataset.texture));
-      });
+      $$('#textureSeg button').forEach(b => b.addEventListener('click', () => setTexture(b.dataset.texture)));
 
       sauceKnob.addEventListener('input', () => {
         state.knob = Number(sauceKnob.value);
         updateHints();
       });
 
-      buildBtn.addEventListener('click', buildSteps);
+      buildBtn.addEventListener('click', () => {
+        buildSteps();
+        toastMsg('Loadout locked. Power-ups next.');
+        showScreen('hacks');
+      });
+
       surpriseBtn.addEventListener('click', randomProduct);
       resetAllBtn.addEventListener('click', resetAll);
 
-      startPauseBtn.addEventListener('click', () => {
-        const s = state.steps[state.stepIndex];
-        if(!s || s.kind!=='timer') return;
-        if(state.running){
-          stopTimer();
-          toastMsg('Paused. Your noodles are on standby.');
-        } else {
-          startTimer();
-          toastMsg('Timer started. Do not blink.');
-        }
-        syncActiveStep();
+      // Hacks
+      rerollBtn.addEventListener('click', () => {
+        updateHints();
+        toastMsg('Hacks rerolled. Chaos refreshed.');
+      });
+      toCookBtn.addEventListener('click', () => {
+        if(state.steps.length === 0) buildSteps();
+        showScreen('cook');
       });
 
-      skipBtn.addEventListener('click', () => {
+      // Dock controls
+      nextBtn.addEventListener('click', () => {
         const s = state.steps[state.stepIndex];
         if(!s) return;
-        if(state.running){
-          stopTimer();
+
+        if(s.kind === 'timer'){
+          if(state.running){
+            stopTimer();
+            beep('skip');
+            toastMsg('Skipping ahead…');
+            nextStep();
+            return;
+          }
+          startTimer();
+          toastMsg(state.remaining < s.duration ? 'Resumed!' : 'Timer started!');
+          nextBtn.textContent = nextButtonLabel();
+          return;
         }
+
+        // action step
         beep('skip');
         nextStep();
       });
 
       restartBtn.addEventListener('click', restartStep);
-
       muteBtn.addEventListener('click', () => {
         state.muted = !state.muted;
         muteBtn.textContent = state.muted ? '🔇 Sound off' : '🔊 Sound on';
         toastMsg(state.muted ? 'Muted.' : 'Sound on.');
       });
 
-      // Keyboard shortcuts
+      // Keyboard
       window.addEventListener('keydown', (e) => {
-        // ignore typing in select/range
         const t = e.target;
         const isForm = t && (t.tagName==='SELECT' || t.tagName==='INPUT' || t.tagName==='TEXTAREA');
         if(isForm) return;
 
         if(e.code==='Space'){
           e.preventDefault();
-          if(!startPauseBtn.disabled) startPauseBtn.click();
-        } else if(e.key==='ArrowRight'){
-          if(!skipBtn.disabled) skipBtn.click();
+          if(!nextBtn.disabled) nextBtn.click();
         } else if(e.key.toLowerCase()==='r'){
           if(!restartBtn.disabled) restartBtn.click();
         } else if(e.key.toLowerCase()==='m'){
           muteBtn.click();
+        } else if(e.key==='Escape'){
+          // quick exit to start
+          navHome.click();
         }
       });
 
-      // Little visual for knob
-      knobBar.style.width = state.knob + '%';
+      // Start screen
+      showScreen('start', false);
     }
 
     init();
